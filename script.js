@@ -5,8 +5,35 @@ const formSearch = document.querySelector(".form-search"),
     dropdownCitiesTo = formSearch.querySelector(".dropdown__cities-to"),
     inputDateDepart = formSearch.querySelector(".input__date-depart");
 
-const city = ["Москва", "Санкт-Петербург", "Минск", "Караганда", "Челябинск"];
+const city = [
+    "Москва",
+    "Санкт-Петербург",
+    "Минск",
+    "Караганда",
+    "Челябинск",
+    "Керч",
+    "Волгоград",
+    "Самара",
+    "Днепропетровск",
+    "Екатеринбург",
+    "Ухань",
+    "Шымкен",
+    "Калининград",
+    "Нижний Новгород",
+    "Вроцлав",
+    "Ростов-на-Дону",
+];
 
 inputCitiesFrom.addEventListener("input", () => {
-    console.log(inputCitiesFrom);
+    dropdownCitiesFrom.textContent = "";
+    const filterCity = city.filter((item) => {
+        return item.toLowerCase().includes(inputCitiesFrom.value.toLowerCase());
+    });
+    filterCity.forEach((item) => {
+        const li = document.createElement("li");
+        li.classList.add("dropdown__city");
+        li.textContent = item;
+        dropdownCitiesFrom.append(li);
+        console.log(li);
+    });
 });
