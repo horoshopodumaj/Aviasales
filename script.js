@@ -11,7 +11,7 @@ const city = [
     "Минск",
     "Караганда",
     "Челябинск",
-    "Керч",
+    "Керчь",
     "Волгоград",
     "Самара",
     "Днепропетровск",
@@ -26,14 +26,18 @@ const city = [
 
 inputCitiesFrom.addEventListener("input", () => {
     dropdownCitiesFrom.textContent = "";
-    const filterCity = city.filter((item) => {
-        return item.toLowerCase().includes(inputCitiesFrom.value.toLowerCase());
-    });
-    filterCity.forEach((item) => {
-        const li = document.createElement("li");
-        li.classList.add("dropdown__city");
-        li.textContent = item;
-        dropdownCitiesFrom.append(li);
-        console.log(li);
-    });
+
+    if (inputCitiesFrom.value !== "") {
+        const filterCity = city.filter((item) => {
+            return item
+                .toLowerCase()
+                .includes(inputCitiesFrom.value.toLowerCase());
+        });
+        filterCity.forEach((item) => {
+            const li = document.createElement("li");
+            li.classList.add("dropdown__city");
+            li.textContent = item;
+            dropdownCitiesFrom.append(li);
+        });
+    }
 });
