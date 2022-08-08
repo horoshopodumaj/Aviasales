@@ -24,7 +24,7 @@ const city = [
     "Ростов-на-Дону",
 ];
 
-inputCitiesFrom.addEventListener("input", () => {
+const showCity = () => {
     dropdownCitiesFrom.textContent = "";
 
     if (inputCitiesFrom.value !== "") {
@@ -40,4 +40,6 @@ inputCitiesFrom.addEventListener("input", () => {
             dropdownCitiesFrom.append(li);
         });
     }
-});
+};
+
+inputCitiesFrom.addEventListener("input", showCity);
