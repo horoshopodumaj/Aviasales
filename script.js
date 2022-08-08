@@ -24,22 +24,22 @@ const city = [
     "Ростов-на-Дону",
 ];
 
-const showCity = () => {
-    dropdownCitiesFrom.textContent = "";
+const showCity = (input, list) => {
+    list.textContent = "";
 
-    if (inputCitiesFrom.value !== "") {
+    if (input.value !== "") {
         const filterCity = city.filter((item) => {
-            return item
-                .toLowerCase()
-                .includes(inputCitiesFrom.value.toLowerCase());
+            return item.toLowerCase().includes(input.value.toLowerCase());
         });
         filterCity.forEach((item) => {
             const li = document.createElement("li");
             li.classList.add("dropdown__city");
             li.textContent = item;
-            dropdownCitiesFrom.append(li);
+            list.append(li);
         });
     }
 };
 
-inputCitiesFrom.addEventListener("input", showCity);
+inputCitiesFrom.addEventListener("input", () =>
+    showCity(inputCitiesFrom, dropdownCitiesFrom)
+);
