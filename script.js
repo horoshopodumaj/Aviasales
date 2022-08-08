@@ -43,3 +43,11 @@ const showCity = (input, list) => {
 inputCitiesFrom.addEventListener("input", () =>
     showCity(inputCitiesFrom, dropdownCitiesFrom)
 );
+
+dropdownCitiesFrom.addEventListener("click", (event) => {
+    const target = event.target;
+    if (target.tagName.toLowerCase() === "li") {
+        inputCitiesFrom.value = target.textContent;
+        dropdownCitiesFrom.textContent = "";
+    }
+});
