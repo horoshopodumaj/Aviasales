@@ -5,6 +5,9 @@ const formSearch = document.querySelector(".form-search"),
     dropdownCitiesTo = formSearch.querySelector(".dropdown__cities-to"),
     inputDateDepart = formSearch.querySelector(".input__date-depart");
 
+const citiesApi = "dataBase/cities.json";
+const proxy = "https://cors-anywhere.herokuapp.com/";
+
 const city = [
     "Москва",
     "Санкт-Петербург",
@@ -23,6 +26,22 @@ const city = [
     "Вроцлав",
     "Ростов-на-Дону",
 ];
+
+const getData = (url, callBack) => {
+    const request = new XMLHttpRequest();
+    request.open("GET", url);
+
+    request.addEventListener("readystatechange", () => {
+        if (request.readyState !== 4) return;
+
+        if (request.status === 200) {
+            callBack(request.response);
+        } else {
+            console.error(request.status);
+        }
+    });
+    request.send();
+};
 
 const showCity = (input, list) => {
     list.textContent = "";
@@ -63,3 +82,7 @@ dropdownCitiesFrom.addEventListener("click", () =>
 dropdownCitiesTo.addEventListener("click", () =>
     selectCity(inputCitiesTo, dropdownCitiesTo, event)
 );
+
+getData(citiesApi, (data) => {
+    console.log(JSON.parse(data));
+});
