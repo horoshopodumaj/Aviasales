@@ -40,26 +40,26 @@ const showCity = (input, list) => {
     }
 };
 
+const selectCity = (input, list, event) => {
+    const target = event.target;
+    if (target.tagName.toLowerCase() === "li") {
+        input.value = target.textContent;
+        list.textContent = "";
+    }
+};
+
 inputCitiesFrom.addEventListener("input", () =>
     showCity(inputCitiesFrom, dropdownCitiesFrom)
 );
-
-dropdownCitiesFrom.addEventListener("click", (event) => {
-    const target = event.target;
-    if (target.tagName.toLowerCase() === "li") {
-        inputCitiesFrom.value = target.textContent;
-        dropdownCitiesFrom.textContent = "";
-    }
-});
 
 inputCitiesTo.addEventListener("input", () =>
     showCity(inputCitiesTo, dropdownCitiesTo)
 );
 
-dropdownCitiesTo.addEventListener("click", (event) => {
-    const target = event.target;
-    if (target.tagName.toLowerCase() === "li") {
-        inputCitiesTo.value = target.textContent;
-        dropdownCitiesTo.textContent = "";
-    }
-});
+dropdownCitiesFrom.addEventListener("click", () =>
+    selectCity(inputCitiesFrom, dropdownCitiesFrom, event)
+);
+
+dropdownCitiesTo.addEventListener("click", () =>
+    selectCity(inputCitiesTo, dropdownCitiesTo, event)
+);
