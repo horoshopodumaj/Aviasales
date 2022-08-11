@@ -11,9 +11,7 @@ const proxy = "https://cors-anywhere.herokuapp.com/";
 
 const API_KEY = "64419c0306fba50f4b589a9f96cfcc8a";
 
-const calendar = new URL(
-    "https://api.travelpayouts.com/aviasales/v3/prices_for_dates"
-);
+const calendar = new URL("http://api.travelpayouts.com/v2/prices/month-matrix");
 
 let city = [];
 
@@ -57,6 +55,15 @@ const selectCity = (input, list, event) => {
     }
 };
 
+const renderCheap = (data, date) => {
+    const cheapTicketMonth = JSON.parse(data).data;
+    const cheapTicketDay = cheapTicketMonth.filter((ticket) => {
+        return ticket.depart_date === date;
+    });
+    console.log(cheapTicketMonth);
+    console.log(cheapTicketDay);
+};
+
 inputCitiesFrom.addEventListener("input", () =>
     showCity(inputCitiesFrom, dropdownCitiesFrom)
 );
@@ -85,18 +92,14 @@ formSearch.addEventListener("submit", (event) => {
 
     calendar.searchParams.set("origin", `${formData.from}`);
     calendar.searchParams.set("destination", `${formData.to}`);
-    calendar.searchParams.set("departure_at", `${formData.when}`);
+    calendar.searchParams.set("month", `${formData.when}`);
     calendar.searchParams.set("token", API_KEY);
 
     getData(proxy + calendar, (response) => {
-        console.log(response);
+        renderCheap(response, formData.when);
     });
 });
 
 getData(citiesApi, (data) => {
     city = JSON.parse(data).filter((item) => item.name);
 });
-
-// getData(proxy + calendar, (response) => {
-//     console.log(response);
-// });
