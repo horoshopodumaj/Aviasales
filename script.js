@@ -12,32 +12,12 @@ const proxy = "https://cors-anywhere.herokuapp.com/";
 const API_KEY = "64419c0306fba50f4b589a9f96cfcc8a";
 
 const calendar = new URL(
-    "https://api.travelpayouts.com/aviasales/v3/grouped_prices"
+    "https://api.travelpayouts.com/aviasales/v3/prices_for_dates"
 );
-calendar.searchParams.set("origin", "SVX");
-calendar.searchParams.set("destination", "KRR");
-calendar.searchParams.set("departure_at", "2022-08-12");
-calendar.searchParams.set("token", API_KEY);
 
 let city = [];
 
 const getData = (url, callBack) => {
-    const request = new XMLHttpRequest();
-    request.open("GET", url);
-
-    request.addEventListener("readystatechange", () => {
-        if (request.readyState !== 4) return;
-
-        if (request.status === 200) {
-            callBack(request.response);
-        } else {
-            console.error(request.status);
-        }
-    });
-    request.send();
-};
-
-const getTicket = (url, callBack) => {
     const request = new XMLHttpRequest();
     request.open("GET", url);
 
@@ -93,10 +73,30 @@ dropdownCitiesTo.addEventListener("click", () =>
     selectCity(inputCitiesTo, dropdownCitiesTo, event)
 );
 
+formSearch.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const formData = {
+        from: city.find((item) => inputCitiesFrom.value === item.name).code,
+        to: city.find((item) => inputCitiesTo.value === item.name).code,
+        when: inputDateDepart.value,
+    };
+
+    // const requestData = `?origin=${formData.from}&destination=${formData.to}&departure_at=${formData.when}&token=${API_KEY}`;
+
+    calendar.searchParams.set("origin", `${formData.from}`);
+    calendar.searchParams.set("destination", `${formData.to}`);
+    calendar.searchParams.set("departure_at", `${formData.when}`);
+    calendar.searchParams.set("token", API_KEY);
+
+    getData(proxy + calendar, (response) => {
+        console.log(response);
+    });
+});
+
 getData(citiesApi, (data) => {
     city = JSON.parse(data).filter((item) => item.name);
 });
 
-getTicket(proxy + calendar, (data) => {
-    console.log(JSON.parse(data));
-});
+// getData(proxy + calendar, (response) => {
+//     console.log(response);
+// });
