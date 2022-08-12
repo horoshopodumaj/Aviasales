@@ -36,7 +36,9 @@ const showCity = (input, list) => {
 
     if (input.value !== "") {
         const filterCity = city.filter((item) => {
-            return item.name.toLowerCase().includes(input.value.toLowerCase());
+            return item.name
+                .toLowerCase()
+                .startsWith(input.value.toLowerCase());
         });
         filterCity.forEach((item) => {
             const li = document.createElement("li");
@@ -55,13 +57,22 @@ const selectCity = (input, list, event) => {
     }
 };
 
+const renderCheapDay = (cheapTicket) => {
+    console.log(cheapTicket);
+};
+
+const renderCheapMonth = (cheapTickets) => {
+    cheapTickets.sort((a, b) => a.value - b.value);
+    console.log(cheapTickets);
+};
+
 const renderCheap = (data, date) => {
     const cheapTicketMonth = JSON.parse(data).data;
     const cheapTicketDay = cheapTicketMonth.filter((ticket) => {
         return ticket.depart_date === date;
     });
-    console.log(cheapTicketMonth);
-    console.log(cheapTicketDay);
+    renderCheapMonth(cheapTicketMonth);
+    renderCheapDay(cheapTicketDay);
 };
 
 inputCitiesFrom.addEventListener("input", () =>
@@ -102,4 +113,13 @@ formSearch.addEventListener("submit", (event) => {
 
 getData(citiesApi, (data) => {
     city = JSON.parse(data).filter((item) => item.name);
+    city.sort((a, b) => {
+        if (a.name > b.name) {
+            return 1;
+        }
+        if (a.name < b.name) {
+            return -1;
+        }
+        return 0;
+    });
 });
