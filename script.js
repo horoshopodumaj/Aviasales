@@ -94,21 +94,24 @@ dropdownCitiesTo.addEventListener("click", () =>
 formSearch.addEventListener("submit", (event) => {
     event.preventDefault();
     const formData = {
-        from: city.find((item) => inputCitiesFrom.value === item.name).code,
-        to: city.find((item) => inputCitiesTo.value === item.name).code,
+        from: city.find((item) => inputCitiesFrom.value === item.name),
+        to: city.find((item) => inputCitiesTo.value === item.name),
         when: inputDateDepart.value,
     };
 
-    // const requestData = `?origin=${formData.from}&destination=${formData.to}&departure_at=${formData.when}&token=${API_KEY}`;
+    if (formData.from && formData.to) {
+        // const requestData = `?origin=${formData.from.code}&destination=${formData.to.code}&departure_at=${formData.when}&token=${API_KEY}`;
+        calendar.searchParams.set("origin", `${formData.from.code}`);
+        calendar.searchParams.set("destination", `${formData.to.code}`);
+        calendar.searchParams.set("month", `${formData.when}`);
+        calendar.searchParams.set("token", API_KEY);
 
-    calendar.searchParams.set("origin", `${formData.from}`);
-    calendar.searchParams.set("destination", `${formData.to}`);
-    calendar.searchParams.set("month", `${formData.when}`);
-    calendar.searchParams.set("token", API_KEY);
-
-    getData(proxy + calendar, (response) => {
-        renderCheap(response, formData.when);
-    });
+        getData(proxy + calendar, (response) => {
+            renderCheap(response, formData.when);
+        });
+    } else {
+        alert("Введите корректное название города");
+    }
 });
 
 getData(citiesApi, (data) => {
