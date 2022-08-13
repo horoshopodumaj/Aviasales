@@ -3,7 +3,9 @@ const formSearch = document.querySelector(".form-search"),
     dropdownCitiesFrom = formSearch.querySelector(".dropdown__cities-from"),
     inputCitiesTo = formSearch.querySelector(".input__cities-to"),
     dropdownCitiesTo = formSearch.querySelector(".dropdown__cities-to"),
-    inputDateDepart = formSearch.querySelector(".input__date-depart");
+    inputDateDepart = formSearch.querySelector(".input__date-depart"),
+    cheapestTicket = document.getElementById("cheapest-ticket"),
+    otherCheapTickets = document.getElementById("other-cheap-tickets");
 
 const citiesApi = "dataBase/cities.json";
 // const citiesApi = "http://api.travelpayouts.com/data/ru/cities.json";
@@ -57,7 +59,56 @@ const selectCity = (input, list, event) => {
     }
 };
 
+const createCart = (data) => {
+    const ticket = document.createElement("article");
+    ticket.classList.add("ticket");
+
+    let deep = "";
+    if (data) {
+        deep = `
+            <h3 class='agent'>${data.gate}</h3>
+            <div class='ticket__wrapper'>
+                <div class='left-side'>
+                    <a href='' class='button button__buy'>Купить за ${
+                        data.value
+                    }p</a>
+                </div>
+                <div class='right-side'>
+                    <div class='block-left'>
+                        <div class='city__from'>Вылет из города
+                            <span class='city__name'>${
+                                inputCitiesFrom.value
+                            }</span>
+                        </div>
+                        <div class='date'>${data.depart_date}</div>
+                    </div>
+
+                    <div class='block-right'>
+                        <div class='changes'>${
+                            data.number_of_changes === 0
+                                ? "Без пересадок"
+                                : `${data.number_of_changes} пересадка(и)`
+                        }</div>
+                        <div class='city__to'>Город назначения:
+                            <span class='city__name'>${
+                                inputCitiesTo.value
+                            }</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    } else {
+        deep = "<h3>К сожалению, на текущую дату билетов нет</h3>";
+    }
+
+    ticket.insertAdjacentHTML("afterbegin", deep);
+    return ticket;
+};
+
 const renderCheapDay = (cheapTicket) => {
+    const ticket = createCart(cheapTicket[0]);
+    cheapestTicket.insertAdjacentElement("beforeend", ticket);
     console.log(cheapTicket);
 };
 
