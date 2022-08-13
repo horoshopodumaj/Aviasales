@@ -59,6 +59,16 @@ const selectCity = (input, list, event) => {
     }
 };
 
+const getDate = (date) => {
+    return new Date(date).toLocaleString("ru", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+    });
+};
+
 const createCart = (data) => {
     const ticket = document.createElement("article");
     ticket.classList.add("ticket");
@@ -80,7 +90,7 @@ const createCart = (data) => {
                                 inputCitiesFrom.value
                             }</span>
                         </div>
-                        <div class='date'>${data.depart_date}</div>
+                        <div class='date'>${getDate(data.depart_date)}</div>
                     </div>
 
                     <div class='block-right'>
@@ -107,12 +117,19 @@ const createCart = (data) => {
 };
 
 const renderCheapDay = (cheapTicket) => {
+    cheapestTicket.style.display = "block";
+    cheapestTicket.innerHTML = "<h2>Самый дешевый билет на выбранную дату</h2>";
+
     const ticket = createCart(cheapTicket[0]);
     cheapestTicket.insertAdjacentElement("beforeend", ticket);
     console.log(cheapTicket);
 };
 
 const renderCheapMonth = (cheapTickets) => {
+    otherCheapTickets.style.display = "block";
+    otherCheapTickets.innerHTML =
+        "<h2>Самые дешевые билеты в текущем месяце</h2>";
+
     cheapTickets.sort((a, b) => a.value - b.value);
     console.log(cheapTickets);
 };
