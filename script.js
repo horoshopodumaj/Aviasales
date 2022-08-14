@@ -76,8 +76,15 @@ const getLinkAviasales = (data) => {
     const link = `https://www.aviasales.ru/search/${data.origin}${
         day < 10 ? "0" + day : day
     }${month < 10 ? "0" + month : month}${data.destination}1`;
-    console.log(link);
     return link;
+};
+
+const createMessage = (textMessage) => {
+    const message = document.createElement("article");
+    message.classList.add("ticket");
+    text = `<h3>${textMessage}</h3>`;
+    message.insertAdjacentHTML("afterbegin", text);
+    return message;
 };
 
 const createCart = (data) => {
@@ -135,7 +142,6 @@ const renderCheapDay = (cheapTicket) => {
 
     const ticket = createCart(cheapTicket[0]);
     cheapestTicket.insertAdjacentElement("beforeend", ticket);
-    console.log(cheapTicket);
 };
 
 const renderCheapMonth = (cheapTickets) => {
@@ -196,12 +202,20 @@ formSearch.addEventListener("submit", (event) => {
                 renderCheap(response, formData.when);
             },
             (error) => {
-                alert("В этом направлении нет рейсов");
+                const textMessage = "В этом направлении нет рейсов";
+                cheapestTicket.style.display = "block";
+                cheapestTicket.innerHTML = "";
+                otherCheapTickets.innerHTML = "";
+                cheapestTicket.append(createMessage(textMessage));
                 console.error("Ошибка", error);
             }
         );
     } else {
-        alert("Введите корректное название города");
+        const textMessage = "Введите корректное название города";
+        cheapestTicket.style.display = "block";
+        cheapestTicket.innerHTML = "";
+        otherCheapTickets.innerHTML = "";
+        cheapestTicket.append(createMessage(textMessage));
     }
 });
 
