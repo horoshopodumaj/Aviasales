@@ -17,7 +17,7 @@ const calendar = new URL("http://api.travelpayouts.com/v2/prices/month-matrix");
 
 let city = [];
 
-const getData = (url, callBack) => {
+const getData = (url, callBack, reject = console.error) => {
     const request = new XMLHttpRequest();
     request.open("GET", url);
 
@@ -27,7 +27,7 @@ const getData = (url, callBack) => {
         if (request.status === 200) {
             callBack(request.response);
         } else {
-            console.error(request.status);
+            reject(request.status);
         }
     });
     request.send();
@@ -190,9 +190,16 @@ formSearch.addEventListener("submit", (event) => {
         calendar.searchParams.set("month", `${formData.when}`);
         calendar.searchParams.set("token", API_KEY);
 
-        getData(proxy + calendar, (response) => {
-            renderCheap(response, formData.when);
-        });
+        getData(
+            proxy + calendar,
+            (response) => {
+                renderCheap(response, formData.when);
+            },
+            (error) => {
+                alert("В этом направлении нет рейсов");
+                console.error("Ошибка", error);
+            }
+        );
     } else {
         alert("Введите корректное название города");
     }
