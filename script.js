@@ -69,6 +69,19 @@ const getDate = (date) => {
     });
 };
 
+const getLinkAviasales = (data) => {
+    const date = new Date(data.depart_date);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const link = `https://www.aviasales.ru/search/${data.origin}${
+        day < 10 ? "0" + day : day
+    }${month < 10 ? "0" + month : month}${data.destination}1`;
+
+    // link = link + data.origin;
+    console.log(link);
+    return link;
+};
+
 const createCart = (data) => {
     const ticket = document.createElement("article");
     ticket.classList.add("ticket");
@@ -79,9 +92,11 @@ const createCart = (data) => {
             <h3 class='agent'>${data.gate}</h3>
             <div class='ticket__wrapper'>
                 <div class='left-side'>
-                    <a href='' class='button button__buy'>Купить за ${
-                        data.value
-                    }p</a>
+                    <a href=${getLinkAviasales(
+                        data
+                    )} target='_blank'class='button button__buy'>Купить за ${
+            data.value
+        }p</a>
                 </div>
                 <div class='right-side'>
                     <div class='block-left'>
