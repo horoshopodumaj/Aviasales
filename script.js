@@ -76,8 +76,6 @@ const getLinkAviasales = (data) => {
     const link = `https://www.aviasales.ru/search/${data.origin}${
         day < 10 ? "0" + day : day
     }${month < 10 ? "0" + month : month}${data.destination}1`;
-
-    // link = link + data.origin;
     console.log(link);
     return link;
 };
@@ -146,7 +144,10 @@ const renderCheapMonth = (cheapTickets) => {
         "<h2>Самые дешевые билеты в текущем месяце</h2>";
 
     cheapTickets.sort((a, b) => a.value - b.value);
-    console.log(cheapTickets);
+
+    cheapTickets.forEach((ticket) => {
+        otherCheapTickets.append(createCart(ticket));
+    });
 };
 
 const renderCheap = (data, date) => {
